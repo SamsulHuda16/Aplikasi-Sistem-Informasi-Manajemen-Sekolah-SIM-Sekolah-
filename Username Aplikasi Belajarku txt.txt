@@ -1,0 +1,16 @@
+=== DATA DUMMY LOGIN ===
+
+1. Akun Admin Utama:
+   Username : huda90
+   Password : huda90
+   Level    : admin
+
+2. Akun Admin Default:
+   Username : admin
+   Password : admin123
+   Level    : admin
+
+3. Akun User Regular:
+   Username : user
+   Password : user123
+   Level    : user
