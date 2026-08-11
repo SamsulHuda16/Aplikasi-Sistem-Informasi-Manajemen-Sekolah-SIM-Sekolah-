@@ -1,186 +1,189 @@
-<div align="center">
-
-# 🏫 SIM Sekolah — Sistem Informasi Manajemen Sekolah
-
-[![CodeIgniter](https://img.shields.io/badge/Framework-CodeIgniter%203.x-DD4814?style=for-the-badge&logo=codeigniter&logoColor=white)](https://codeigniter.com)
-[![PHP](https://img.shields.io/badge/Language-PHP%207.4%2B%20%7C%208.x-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
-[![MySQL](https://img.shields.io/badge/Database-MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)](https://mysql.com)
-[![Bootstrap](https://img.shields.io/badge/UI%20Framework-Bootstrap%204-7952B3?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](#)
+<h1 align="center">📋 Sistem Informasi Manajemen Tugas Karyawan (M-TUGAS)</h1>
 
 <p align="center">
-  <b>Aplikasi Web Manajemen Data Akademik & Data Terpadu Sekolah Berbasis CodeIgniter 3</b>
-  <br />
-  Solusi modern, terstruktur, dan responsif untuk mengelola Data Siswa, Data Guru, Kelas, dan Akun Pengguna.
+  <img src="https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel 11">
+  <img src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
 </p>
 
-[Fitur Utama](#-fitur-unggulan) • [Kredensial Login](#-kredensial-login-dummy) • [Arsitektur Sistem](#-arsitektur-sistem) • [Panduan Instalasi](#-panduan-instalasi) • [Struktur Proyek](#-struktur-folder-proyek)
+<p align="center">
+  Aplikasi <b>Manajemen Tugas Karyawan (M-TUGAS)</b> berbasis <b>Laravel 11</b> yang dirancang untuk membantu pengawasan, pembagian, pengoperasian, serta pelaporan tugas pekerjaan antar <b>Admin</b> dan <b>Karyawan</b> secara efisien, terstruktur, dan berbasis peran (<i>role-based</i>).
+</p>
 
 ---
 
-</div>
+## ✨ Fitur Utama Sistem
 
-## 🌟 Fitur Unggulan
+### 🔐 1. Keamanan & Autentikasi Solid
+- **Login & Logout Aman**: Menggunakan sistem autentikasi bawaan yang dienkripsi dengan *Bcrypt Hash*.
+- **Middleware Proteksi (`checkLogin` & `checkRole`)**: Menjamin hanya pengguna dengan hak akses yang tepat yang dapat membuka halaman tertentu.
 
-| Fitur | Deskripsi | Keunggulan Utama |
-| :--- | :--- | :--- |
-| 🔐 **Multi-Level Auth** | Pengelolaan hak akses berlapis (`Admin` & `User`) | Enkripsi Password MD5 & Proteksi Session |
-| ⚙️ **Pengaturan & Profil** | Kelola nama lengkap, username, email & kata sandi | Sinkronisasi Session Realtime |
-| 📸 **Upload Foto Profil** | Upload avatar pengguna secara mandiri | Autoresize GD2, Kompresi & Auto Unlink |
-| 🔔 **Notifikasi System** | Lonceng notifikasi & pesan sistem interaktif | Indikator Status Database & Sesi Aktif |
-| 👨‍🎓 **Manajemen Siswa** | Pendataan profil siswa & foto profil | Dynamic Dropdown Tahun Pelajaran & Avatar |
-| 👨‍🏫 **Manajemen Guru** | Pendataan NIP, kontak, gender & foto guru | Manipulasi Gambar GD2 & Validasi Form |
-| 🏫 **Manajemen Kelas** | Klasifikasi tingkatan & kode kelas | Pengelompokan Data Terstruktur |
-| 📅 **Tahun Pelajaran** | Pengelolaan periode tahun ajaran aktif | Integrasi Relasional Data Siswa |
-| ⚡ **DataTables Live** | Tabel interaktif berkecepatan tinggi | Filter Pencarian, Sorting & Live Pagination |
-| 📱 **Layout Responsif** | Tampilan adaptif untuk Desktop, Tablet & HP | Sticky Footer, Touch Scroll & Sidebar Drawer |
+### 🛡️ 2. Pemisahan Hak Akses (Role-Based)
+- 👑 **Admin**:
+  - Kontrol penuh atas Data Karyawan (CRUD).
+  - Mendelegasikan, mengedit, dan menghapus tugas.
+  - Memantau progres dan performa penyelesaian tugas karyawan.
+- 🧑‍💻 **Karyawan**:
+  - Hanya dapat melihat tugas yang ditugaskan khusus untuk dirinya.
+  - Memperbarui status pekerjaan (`Belum Dikerjakan`, `Sedang Dikerjakan`, `Selesai`).
+  - Melampirkan bukti hasil pekerjaan.
+  - Berdiskusi via kolom komentar.
+
+### 🤖 3. Otomatisasi Status Karyawan (Real-time)
+- Kolom `is_tugas` pada sistem akan mendeteksi beban kerja karyawan secara dinamis:
+  - 🔴 **Sudah Ditugaskan**: Karyawan memiliki minimal satu tugas aktif/revisi.
+  - 🟢 **Available / Bebas Tugas**: Karyawan sedang menganggur (semua tugas selesai).
+
+### 📊 4. Papan Kanban & Dashboard Interaktif
+- **Statistik Cerdas**: Pantau jumlah total pengguna, karyawan sibuk vs *available*, serta tugas selesai vs proses.
+- **Kanban Board**: Drag & Drop atau pantau aliran tugas divisualisasikan dalam 4 pilar (*Belum Dikerjakan, Sedang Dikerjakan, Revisi, Selesai*).
+- **Filter Lanjutan**: Cari berdasarkan Karyawan, Prioritas, Status, dan Rentang Waktu.
+
+### ⏰ 5. Peringatan Batas Waktu (Deadline Alert)
+Dilengkapi dengan sistem indikator warna cerdas:
+- 🔴 **Overdue (Terlewat)**: Tugas belum selesai dan melewati batas waktu.
+- 🟡 **Mendekati Deadline**: Sisa waktu kurang dari 24 jam!
+- 🟢 **Tepat Waktu**: Masih dalam masa aman atau sudah selesai.
+
+### 💬 6. Ruang Diskusi & Lampiran Berkas
+- **Upload Berkas**: Dukungan upload lampiran/bukti (JPG, PNG, PDF, ZIP, RAR, DOCX) hingga 10MB.
+- **Komentar & Catatan Revisi**: Mudahkan komunikasi dua arah antara Admin dan Karyawan tanpa aplikasi pihak ketiga.
+
+### 📄 7. Pelaporan (Export)
+- 🖨️ **Export PDF**: Unduh laporan rekapitulasi siap cetak.
+- 📊 **Export Excel/CSV**: Ekspor rekap data untuk olah data lebih lanjut.
 
 ---
 
-## 🔑 Kredensial Login Dummy
+## 📸 Tampilan Antarmuka (Screenshots)
 
-Gunakan akun berikut untuk login dan menguji seluruh fitur aplikasi:
+*(Tambahkan tangkapan layar antarmuka aplikasi di folder `public/images/` dan perbarui tautan di bawah ini)*
 
-| Role | Username | Password | Level Akses | Alamat Email |
-| :--- | :--- | :--- | :--- | :--- |
-| 👑 **Admin Utama** | `huda90` | `huda90` | `Admin` | `huda90@gmail.com` |
-| 🛡️ **Administrator** | `admin` | `admin123` | `Admin` | `admin@gmail.com` |
-| 👤 **User Regular** | `user` | `user123` | `User` | `user@gmail.com` |
-
-> [!NOTE]
-> Seluruh kata sandi di atas dienkripsi menggunakan metode `MD5` di dalam database. Informasi kredensial ini juga tersimpan secara lokal pada file [`Username Aplikasi Belajarku txt.txt`](Username%20Aplikasi%20Belajarku%20txt.txt).
+| Dashboard Admin | Kanban Board Karyawan |
+| :---: | :---: |
+| <img src="public/images/dashboard-admin.png" width="400" alt="Dashboard"> | <img src="public/images/kanban-board.png" width="400" alt="Kanban"> |
 
 ---
 
-## 🏗️ Arsitektur Sistem
+## 🔑 Akun Uji Coba (Demo Credentials)
 
-Aplikasi ini dibangun menggunakan arsitektur **Model-View-Controller (MVC)** dari CodeIgniter 3.
+Gunakan kredensial *dummy* berikut setelah Anda menjalankan seeder:
 
-```mermaid
-graph TD
-    A[Client Browser] -->|HTTP Request| B[Index.php / Router]
-    B -->|Authenticate| C[Admin_login Controller]
-    B -->|CRUD & Settings| D[Admin Controller]
-    C <-->|Query Auth| E[(MySQL Database)]
-    D <-->|Get/Set Data| F[Admin_model]
-    F <-->|SQL Queries| E[(MySQL Database)]
-    D -->|Render View| G[Views / UI Component]
-    G -->|Response HTML/CSS/JS| A
+| Peran (Role) | Email | Password | Nama |
+| :--- | :--- | :--- | :--- |
+| 👑 **Admin** | `huda@gmail.com` | `1234` | samsul |
+| 🧑‍💻 **Pegawai 1** | `pegawai@gmail.com` | `1234` | huda |
+| 🧑‍💻 **Pegawai 2** | `karyawan@gmail.com` | `1234` | samsul huda |
+
+---
+
+## 🚀 Panduan Instalasi (Local Development)
+
+Ikuti langkah-langkah berikut untuk menguji coba aplikasi secara lokal:
+
+### 1. Kloning Repositori & Instalasi Dependensi
+```bash
+git clone https://github.com/username-anda/m-tugas-laravel.git
+cd m-tugas-laravel
+composer install
+npm install && npm run build
 ```
 
-<details>
-<summary>🔍 <b>Klik untuk melihat Relasi Skema Database (db_sekolah)</b></summary>
+### 2. Konfigurasi Environment (`.env`)
+Salin file konfigurasi bawaan dan hasilkan *Application Key*:
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+Sesuaikan koneksi database di file `.env` Anda:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=db_manajemen_tugas
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+### 3. Migrasi Database & Seeder
+Buat database `db_manajemen_tugas` di MySQL, lalu jalankan perintah:
+```bash
+php artisan migrate:fresh --seed
+```
+*(Jangan lupa juga menjalankan `php artisan storage:link` untuk menampilkan gambar/lampiran dengan benar)*
+
+### 4. Jalankan Aplikasi
+```bash
+php artisan serve
+```
+Buka browser Anda dan akses: **👉 http://127.0.0.1:8000**
+
+---
+
+## 🗄️ Skema Database (ERD)
 
 ```mermaid
 erDiagram
-    users {
-        int id_users PK
-        string nama_lengkap
-        string username
+    USERS ||--o{ TUGAS : "mengerjakan"
+    USERS ||--o{ TUGAS_KOMENTAR : "menulis"
+    TUGAS ||--o{ TUGAS_KOMENTAR : "memiliki"
+
+    USERS {
+        bigint id PK
+        string nama
+        string email UK
+        enum jabatan "Admin, Karyawan"
         string password
-        string email
-        enum level
-        string foto
-    }
-    siswa {
-        int id_siswa PK
-        int id_tahun_pelajaran FK
-        int nisn
-        string nama_siswa
-        string almt_siswa
-        enum jk_siswa
-        string foto
-    }
-    guru {
-        int id_guru PK
-        int nip
-        string nama_guru
-        enum jk_guru
-        text alamat_guru
-        string tlp_guru
-        string foto_guru
-    }
-    kelas {
-        int id_kelas PK
-        string kode_kelas
-        string nama_kelas
-    }
-    tahun_pelajaran {
-        int id_tahun_pelajaran PK
-        string tahun_pelajaran
+        boolean is_tugas
+        timestamps created_at_updated_at
     }
 
-    tahun_pelajaran ||--o{ siswa : "memiliki"
+    TUGAS {
+        bigint id PK
+        string judul
+        text deskripsi
+        bigint user_id FK
+        datetime tgl_mulai
+        datetime deadline
+        enum prioritas "Tinggi, Sedang, Rendah"
+        enum status "Belum Dikerjakan, Sedang Dikerjakan, Selesai, Revisi"
+        string lampiran
+        text catatan_karyawan
+        text catatan_admin
+        timestamps created_at_updated_at
+    }
+
+    TUGAS_KOMENTAR {
+        bigint id PK
+        bigint tugas_id FK
+        bigint user_id FK
+        text komentar
+        timestamps created_at_updated_at
+    }
 ```
-</details>
 
 ---
 
-## 💻 Panduan Instalasi
-
-### 1. Persyaratan System
-- **Web Server**: Laragon (direkomendasikan) / XAMPP / Apache
-- **PHP**: versi `7.4` s.d `8.2`
-- **Database**: MySQL `5.7` / `8.0` / MariaDB
-
-### 2. Import Database
-1. Buat database baru di MySQL dengan nama `db_sekolah`:
-   ```sql
-   CREATE DATABASE db_sekolah;
-   ```
-2. Import skema database dari file [`database/db_sekolah.sql`](database/db_sekolah.sql):
-   ```bash
-   mysql -u root db_sekolah < database/db_sekolah.sql
-   ```
-
-### 3. Konfigurasi CodeIgniter
-- Periksa konfigurasi koneksi di [`application/config/database.php`](application/config/database.php):
-  ```php
-  $db['default'] = array(
-      'hostname' => 'localhost',
-      'username' => 'root',
-      'password' => '',
-      'database' => 'db_sekolah',
-      'dbdriver' => 'mysqli',
-  );
-  ```
-- Periksa Base URL di [`application/config/config.php`](application/config/config.php):
-  ```php
-  $config['base_url'] = 'http://localhost/belajar_web/';
-  ```
-
----
-
-## 📂 Struktur Folder Proyek
+## 📁 Struktur Direktori Penting
 
 ```text
-📁 belajar_web
-├── 📁 application
-│   ├── 📁 config           # Konfigurasi database, routes, & aplikasi
-│   ├── 📁 controllers      # Admin.php (CRUD & Settings), Admin_login.php
-│   ├── 📁 models           # Admin_model.php, Login_model.php
-│   └── 📁 views            # beranda, siswa, guru, kelas, pengaturan, form UI
-├── 📁 assets               # Image storage (siswa, guru, users), DataTables, Fonts
-├── 📁 database             # Master Database SQL Export (db_sekolah.sql)
-├── 📁 system               # Framework CodeIgniter 3 Core Engine
-├── 📄 .htaccess            # URL Rewriting rules
-├── 📄 index.php            # Main Entry Point
-└── 📄 README.md            # Dokumentasi Proyek
+├── app/
+│   ├── Http/Controllers/     # Controller (Auth, Dashboard, Tugas, User)
+│   ├── Http/Middleware/      # Middleware (checkLogin, CheckRole)
+│   └── Models/               # Model Database (User, Tugas, TugasKomentar)
+├── database/
+│   ├── migrations/           # Skema tabel
+│   └── seeders/              # Data dummy (Admin & Karyawan)
+├── resources/
+│   └── views/
+│       ├── auth/             # Antarmuka Login
+│       ├── layouts/          # Template Utama & Sidebar
+│       ├── admin/tugas/      # Halaman Manajemen Tugas & Kanban
+│       └── admin/user/       # Halaman Kelola Karyawan
+└── routes/
+    └── web.php               # Konfigurasi Routing
 ```
 
 ---
 
-## 🛠️ Fitur Keamanan & Best Practices
-
-> [!TIP]
-> **Rekomendasi Peningkatan Keamanan Lanjutan:**
-> - Pertimbangkan untuk meng-upgrade fungsi enkripsi dari `MD5` ke `password_hash()` (Bcrypt / Argon2) pada [`Login_model.php`](application/models/Login_model.php).
-> - Selalu pastikan folder `assets/siswa`, `assets/guru`, dan `assets/users` memiliki hak akses tulis (*write permission*) yang sesuai untuk proses unggah foto.
-
----
-
-<div align="center">
-
-Made with ❤️ for **Sistem Informasi Manajemen Sekolah**
-
-</div>
+<p align="center">Dibuat dengan ❤️ menggunakan <b>Laravel 11</b> untuk mempermudah operasional perusahaan Anda.</p>
